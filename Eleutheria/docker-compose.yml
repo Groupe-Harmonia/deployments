@@ -4,7 +4,8 @@ services:
       context: .
     restart: always
     ports:
-      - 55555:80
+      # Si non défini, port 55555
+      - ${ELEUTHERIA_PORT:-55555}:80
     links:
       - db
 
