@@ -8,6 +8,8 @@ services:
       - ${ELEUTHERIA_PORT:-55555}:80
     links:
       - db
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
 
     volumes:
       - images:/var/www/html/images
