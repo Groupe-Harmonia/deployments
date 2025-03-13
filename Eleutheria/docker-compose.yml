@@ -1,12 +1,15 @@
 services:
   app:
     build:
-        context: .
+      context: .
     restart: always
     ports:
       - 55555:80
     links:
       - db
+
+    env_file:
+      - stack.env
     volumes:
       - images:/var/www/html/images
       # Commencez d'abord par lancer le conteneur sans activer cette option.
@@ -18,6 +21,9 @@ services:
   db:
     image: mariadb
     restart: always
+
+    env_file:
+      - stack.env
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
       MYSQL_DATABASE: eleutheria
