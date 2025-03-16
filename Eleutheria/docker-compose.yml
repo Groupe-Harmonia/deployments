@@ -10,6 +10,11 @@ services:
       - db
     labels:
       - com.centurylinklabs.watchtower.enable=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
     volumes:
       - images:/var/www/html/images
@@ -19,9 +24,18 @@ services:
       # activez cette option. Renseignez la variable d'environnement dans un
       # fichier ".env", lisible par Docker Compose.
       - $ELEUTHERIA_LOCAL_SETTINGS:/var/www/html/LocalSettings.php
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: mariadb
     restart: always
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
