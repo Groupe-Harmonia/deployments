@@ -1,14 +1,5 @@
 <?php
 
-// Skin
-wfLoadSkin( 'MinervaNeue' );
-wfLoadSkin( 'MonoBook' );
-wfLoadSkin( 'Timeless' );
-wfLoadSkin( 'Vector' );
-wfLoadSkin( 'Citizen' );
-
-// Extension
-
 # Basics
 wfLoadExtension( 'DiscussionTools' );
 wfLoadExtension( 'Echo' );
@@ -21,7 +12,7 @@ wfLoadExtension( 'SecureLinkFixer' );
 # Content
 wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Math' );
-wfLoadExtension( 'Scribunto' ); # TO CONFIGURE
+wfLoadExtension( 'Scribunto' );
 
 ## Template specific
 wfLoadExtension( 'TemplateData' );

@@ -1,0 +1,3 @@
+<?php
+
+$wgDefaultUserOptions[ 'usecodemirror' ] = true;

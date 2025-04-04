@@ -33,26 +33,13 @@ Une fois le conteneur `app` lancé, rendez vous sur `http://localhost:55555` (Vo
     - Préfixe des tables : *À votre guise*
     - Nom de l'utilisateur : `app`
     - Mot de passe de l'utilisateur : *Valeur de `MYSQL_PASSWORD`*
-3. **Sélectionnez "I'm bored already, just install the wiki." / "J'en ai assez, installer simplement le wiki."**
+3. **Sélectionnez "I'm bored already, just install the wiki." / "J'en ai assez, installer simplement le wiki."** (On parle bien pour tester ici, et non en production)
 4. Continuez, laissez la base de données être mise à jour, puis obtenez votre fichier `LocalSettings.php`. Déposez le dans le dossier `Eleutheria`.
 5. Dans votre `LocalSettings.php`, retirez toutes les lignes mentionnant les extensions et skins/thèmes, et remplacez les par la ligne suivantes :
 
 ```php
+require_once '/var/www/html/LocalSettings/Skins.php';
 require_once '/var/www/html/LocalSettings/Extensions.php';
 ```
 
-<!--
-- Type de wiki
-- Droit d'auteurs
-- Mail
-- Skin
-- Extensions
-- Téléversement des fichiers
-- Instant Commons
-- Logos
-- Mise en cache
--->
-
-```php
-
-```
+Voir les autres snippets pour le `LocalSettings.php` dans le dossier `LocalSettings`. Ils sont installés dans le dossier `/var/www/html/LocalSettings` dans le conteneur.

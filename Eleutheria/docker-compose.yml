@@ -28,6 +28,9 @@ services:
       db:
         condition: service_healthy
 
+    networks:
+      - db
+
   db:
     image: mariadb
     restart: always
@@ -47,7 +50,67 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+    networks:
+      - db
+
+  loki:
+    image: grafana/loki:3.4
+    command: -config.file=/etc/loki/local-config.yaml
+    environment:
+      LOKI_USERNAME: $ELEUTHERIA_LOKI_USERNAME
+      LOKI_PASSWORD: $ELEUTHERIA_LOKI_PASSWORD
+    networks:
+      - log-manager
+
+  fluentd:
+    image: grafana/fluent-plugin-loki:3.4
+    command:
+      - "fluentd"
+      - "-v"
+      - "-p"
+      - "/fluentd/plugins"
+    environment:
+      LOKI_URL: http://loki:3100
+      LOKI_USERNAME: $ELEUTHERIA_LOKI_USERNAME
+      LOKI_PASSWORD: $ELEUTHERIA_LOKI_PASSWORD
+    deploy:
+      mode: global
+    volumes:
+      - 'logs:/fluentd/log'
+      # Needed for journald log ingestion:
+      # - /etc/machine-id:/etc/machine-id
+      # - /dev/log:/dev/log
+      # - /var/run/systemd/journal/:/var/run/systemd/journal/
+    networks:
+      - log-manager
+    # logging:
+    #   options:
+    #     tag: infra.monitoring
+    # ports:
+    #   - '24224:24224/udp'
+    #   - '24224:24224'
+
+  grafana:
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_FEATURE_TOGGLES_ENABLE=alertingSimplifiedRouting,alertingQueryAndExpressionsStepMode
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - log-manager
+      - db
+
+networks:
+  log-manager:
+  db:
 
 volumes:
   images:
   db:
+  logs:

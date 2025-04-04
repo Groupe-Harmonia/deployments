@@ -1,0 +1,3 @@
+<?php
+
+$wgFragmentMode = [ "html5" ];
